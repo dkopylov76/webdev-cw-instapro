@@ -63,7 +63,7 @@ export const goToPage = (newPage, data) => {
           renderApp();
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
           goToPage(POSTS_PAGE);
         });
     }
@@ -82,7 +82,7 @@ export const goToPage = (newPage, data) => {
           renderApp();
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
           goToPage(POSTS_PAGE);
         });
     }
@@ -139,7 +139,6 @@ const renderApp = () => {
     });
   }
 
-
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
       appEl,
@@ -148,8 +147,11 @@ const renderApp = () => {
 
   if (page === USER_POSTS_PAGE) {
     // @TODO: реализовать страницу с фотографиями отдельного пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    //appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    //return;
+    return renderUserPostsPageComponent({
+      appEl,
+    });
   }
 };
 
