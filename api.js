@@ -67,3 +67,65 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+export function getUserPosts({ token, userId }) {
+  return fetch(`${postsHost}/user-posts/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Ошибка загрузки постов пользователя");
+      }
+      return response.json();
+    })
+    .then((data) => data.posts);
+}
+
+export function likePost({ postId, token }) {
+  return fetch(`${postsHost}/${postId}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Ошибка при лайке поста");
+    }
+    return response.json();
+  });
+}
+
+export function dislikePost({ postId, token }) {
+  return fetch(`${postsHost}/${postId}/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Ошибка при дизлайке поста");
+    }
+    return response.json();
+  });
+}
+
+export function toggleLike({ postId, token, isLiked }) {
+  const url = `${postsHost}/${postId}/${isLiked ? "dislike" : "like"}`;
+
+  console.log(`Sending request to: ${url}`);
+
+  return fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Ошибка при лайке поста");
+    }
+    return response.json();
+  });
+}
