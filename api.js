@@ -23,6 +23,37 @@ export function getPosts({ token }) {
     });
 }
 
+export function addPost({ token, description, imageUrl }) {
+  if (!description || !imageUrl) {
+    throw new Error("Необходимо передать описание и ссылку на изображение");
+  }
+
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({ description, imageUrl }),
+  })
+    .then((response) => {
+      console.log("Статус ответа:", response.status);
+      if (!response.ok) {
+        return response.text().then((text) => {
+          throw new Error(`Ошибка при добавлении поста: ${text}`);
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Пост успешно добавлен:", data);
+      return data;
+    })
+    .catch((error) => {
+      console.error("Ошибка при добавлении поста:", error);
+      throw error;
+    });
+}
+
 export function registerUser({ login, password, name, imageUrl }) {
   return fetch(baseHost + "/api/user", {
     method: "POST",
