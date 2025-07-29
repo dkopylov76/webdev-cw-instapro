@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, getUserPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -9,12 +9,14 @@ import {
   USER_POSTS_PAGE,
 } from "./routes.js";
 import { renderPostsPageComponent } from "./components/posts-page-component.js";
+import { addPost } from "./api.js";
 import { renderLoadingPageComponent } from "./components/loading-page-component.js";
 import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import { renderUserPostsPageComponent } from "./components/user-page-component.js";
 
 export let user = getUserFromLocalStorage();
 export let page = null;
@@ -68,10 +70,21 @@ export const goToPage = (newPage, data) => {
 
     if (newPage === USER_POSTS_PAGE) {
       // @@TODO: реализовать получение постов юзера из API
+      page = LOADING_PAGE;
+      renderApp();
+
       console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
+
+      return getUserPosts({ token: getToken(), userId: data.userId })
+        .then((newPosts) => {
+          page = USER_POSTS_PAGE;
+          posts = newPosts;
+          renderApp();
+        })
+        .catch((error) => {
+          console.error(error);
+          goToPage(POSTS_PAGE);
+        });
     }
 
     page = newPage;
@@ -112,10 +125,20 @@ const renderApp = () => {
       onAddPostClick({ description, imageUrl }) {
         // @TODO: реализовать добавление поста в API
         console.log("Добавляю пост...", { description, imageUrl });
-        goToPage(POSTS_PAGE);
+        const token = getToken();
+        addPost({ token, description, imageUrl })
+          .then((response) => {
+            console.log("Пост успешно добавлен:", response);
+            goToPage(POSTS_PAGE);
+          })
+          .catch((error) => {
+            console.error("Ошибка при добавлении поста:", error);
+            alert(`Ошибка при добавлении поста: ${error.message}`);
+          });
       },
     });
   }
+
 
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
