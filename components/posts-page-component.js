@@ -3,8 +3,7 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
 export function renderPostsPageComponent({ appEl }) {
-  const postsHtml = state.posts.length
-    ? state.posts
+  const postsHtml = posts.length ? posts
         .map((post) => {
           const formattedDate = post.createdAt
             ? new Date(post.createdAt).toLocaleString()
