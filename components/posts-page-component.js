@@ -3,24 +3,21 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
 export function renderPostsPageComponent({ appEl }) {
-  const postsHtml = posts.length ? posts
-        .map((post) => {
-          const formattedDate = post.createdAt
-            ? new Date(post.createdAt).toLocaleString()
-            : "";
+  const postsHtml = posts.length ? posts.map((post) => {
+          const formattedDate = post.createdDate ? new Date(post.createdDate).toLocaleString() : "";
 
           // Обработка лайков
           let likesText = "";
           if (post.likes && Array.isArray(post.likes)) {
             const likesCount = post.likes.length;
-            const likerNames = post.likes.map((like) => like.name);
+            const likerName = post.likes.map((like) => like.name);
 
             if (likesCount === 0) {
               likesText = "0";
             } else if (likesCount === 1) {
-              likesText = likerNames[0];
+              likesText = likerName[0];
             } else {
-              likesText = `${likerNames[0]} и еще ${likesCount - 1}`;
+              likesText = `${likerName[0]} и еще ${likesCount - 1}`;
             }
           } else if (typeof post.likes === "number") {
             likesText = post.likes > 0 ? `еще ${post.likes}` : "0";
@@ -36,33 +33,24 @@ export function renderPostsPageComponent({ appEl }) {
             </div>
             <div class="post-likes">
               <button data-post-id="${post.id}" class="like-button">
-                <img src="${
-                  post.isLiked
-                    ? "./assets/images/like-active.svg"
-                    : "./assets/images/like-not-active.svg"
-                }">
+                <img src="${post.isLiked ? "./assets/images/like-active.svg" : "./assets/images/like-not-active.svg"}">
               </button>
               <p class="post-likes-text">
                 Нравится: <strong>${likesText}</strong>
               </p>
             </div>
             <p class="post-text">
-              <span class="user-name">${post.user.name}</span>
-              ${post.description}
+              <span class="user-name">${post.user.name}</span> ${post.description}
             </p>
             <p class="post-date">${formattedDate}</p>
           </li>
           `;
         })
-        .join("")
+        .join(" ")
     : "<p>Нет постов</p>";
 
-  console.log("Актуальный список постов:", posts);
+  // console.log("Актуальный список постов:", posts);
 
-  /**
-   * @TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
-   * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
-   */
   const appHtml = `
     <div class="page-container">
       <div class="header-container"></div>
