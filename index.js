@@ -122,7 +122,7 @@ export const goToPage = (newPage, data) => {
           renderApp();
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           goToPage(POSTS_PAGE);
         });
     }
@@ -141,7 +141,7 @@ export const goToPage = (newPage, data) => {
           renderApp();
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           goToPage(POSTS_PAGE);
         });
     }
