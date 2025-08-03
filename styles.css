@@ -14,9 +14,9 @@
 
 .logo {
   margin: 0;
-  font-size: 28px;
+  font-size: 35px;
   cursor: pointer;
-  width: 130px;
+  width: 150px;
 }
 
 .header-container {
@@ -27,14 +27,14 @@
   padding: 0;
   border: none;
   background-color: transparent;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 18px;
   font-weight: 500;
   cursor: pointer;
 }
 
 .logout-button {
-  width: 130px;
+  width: 60px;
   text-align: right;
 }
 
@@ -176,7 +176,7 @@
   text-align: center;
 }
 
-.file-upload-image-conrainer {
+.file-upload-image-container {
   display: flex;
   align-items: center;
 }
